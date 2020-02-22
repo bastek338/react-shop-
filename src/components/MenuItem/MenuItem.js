@@ -5,7 +5,6 @@ import  { withRouter } from 'react-router-dom';
 const MenuItem = ({title, imageUrl, size, history, match, linkUrl}) => {
     
     const largeStyle = size ? styles.large : '';
-    console.log(history, match);
     return (
         <div 
         className={[styles['menu-item'], largeStyle].join(" ")}

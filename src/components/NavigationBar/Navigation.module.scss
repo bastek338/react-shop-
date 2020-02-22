@@ -4,30 +4,38 @@
     display: flex; 
     justify-content: space-between;
     align-items: center;
-    font-weight: bold;
+    font-size: 22px;
 
-    & ul {
-        padding: 0 50px;
-        display: flex;
+   & .OptionLeft {
+       width: 30%;
+       display: flex;
+   }
+
+   & .OptionRight {
+       width: 30%;
+       display: flex;
+       justify-content: flex-end;
+   }
+
+   & .Option {
+    padding: 10px;
     }
 
-    & li{
-        list-style: none;
-        padding: 10px;
+    & .Option :hover{
+        font-weight: bold;
+        color: #000
     }
 
-    & img {
-        width: 125px;
-        height: 125px;
-    }
+   & .Logo{
+       display: flex;
+   }
 
     & a {
         text-decoration: none;
         color: #000;
-        font-size: 22px;
     }
 
-    & .active {
-        font-weight: 700;
+    & .Active {
+        font-weight: bold;
     }
 }
