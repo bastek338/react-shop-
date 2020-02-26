@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import FormInput from '../UI/FormInput/FormInput';
 import Button from '../UI/Button/Button';
 import * as Yup from 'yup';
+import { signInWithGoogle } from '../../firebase/firebase';
 
 
 const SignIn = () => {
@@ -29,7 +30,7 @@ const SignIn = () => {
             <FormInput label="Password" type="password" {...formik.getFieldProps('password')}/>
             <div className={styles.ButtonGroup}>
                 <Button>sign in</Button>
-                <Button color="Red">sign in with google</Button>
+                <Button color="Red" click={signInWithGoogle}>sign in with google</Button>
             </div>
         </form>
     )

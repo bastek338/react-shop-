@@ -1,12 +1,13 @@
-import React, {useState, useReducer} from 'react';
+import React, {useState, useReducer, useEffect} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import HomePage from './pages/Homepage/HomePage';
 import Navigation from './components/NavigationBar/Navigation';
 import ShopPage from './pages/Shop/ShopPage';
 import Auth from './pages/Auth/Auth';
-import SlideBarChanger from './components/SlideBarChanger/SlideBarChanger';
 import { Route, Switch, withRouter } from 'react-router-dom';
+import { auth } from './firebase/firebase';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
 export const ClosedContext = React.createContext(false);
 
@@ -39,28 +40,42 @@ function reducerSlider (state, action) {
 }
 
 function App(props) {
-  
-  const auth = false;
   const [sliderState, dispatch] = useReducer(reducerSlider, initialState)
   const [closed, setClosed] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
   
+  let unsubscribeFromAuth = null;
+  
+  useEffect(() => {
+    if(currentUser){
+      setClosed(false);
+    }
+
+    unsubscribeFromAuth = auth.onAuthStateChanged(user => {
+      setCurrentUser(user);
+    })
+
+    return () => {
+      unsubscribeFromAuth()
+    }
+  }, [currentUser])
+
   const closeSideBarHandler = () => {
     setClosed(false);
   }
   
-
-
-  const openSideBarHandler = (e) => { 
-      if(!auth){
+  const openSideBarHandler = (path, typeofDispatch) => { 
+      if(currentUser == null){
         setClosed(true)
+        dispatch(typeofDispatch);
       } else {
-        props.history.push('/shop');
+        props.history.push(path);
         setClosed(false);
       }
   }
   return (
     <div>
-      <Navigation dispatcher={dispatch} openHandler={openSideBarHandler}/>
+      <Navigation dispatcher={dispatch} openHandler={openSideBarHandler} currentUser={currentUser}/>
       <Switch>
           <Route 
           exact 
@@ -70,9 +85,8 @@ function App(props) {
               <HomePage/>
             </ClosedContext.Provider>
           </Route>
-          <Route path="/shop" component={ShopPage}/>
-          <Route path="/auth" component={Auth}/>
-          <Route exact path='/hats' render={() => <h1>hats page</h1>}/>
+          <Route path="/shop" component={ShopPage} dispatcher={dispatch} currentUser={currentUser}/>
+          <Route path="/myprofile" render={() => <h1>Hello from myprofile</h1>}/>
         
      </Switch> 
     </div>

@@ -2,8 +2,9 @@ import React from 'react';
 import SVG from '../../assets/images/SVG/Logo';
 import styles from './Navigation.module.scss';
 import { NavLink } from 'react-router-dom';
+import { auth } from '../../firebase/firebase';
 
-const Navigation = ({openHandler, dispatcher}) => {
+const Navigation = ({openHandler, dispatcher, currentUser}) => {
     console.log(dispatcher)    
     return (
             <nav className={styles.Navigation}>
@@ -15,8 +16,11 @@ const Navigation = ({openHandler, dispatcher}) => {
             <NavLink to="/"><SVG width="125" height="125"/></NavLink>
             </div>
             <div className={styles.OptionRight}>
-                <div className={styles.Option}><div onClick={() => {openHandler(); dispatcher({type: 'initialLogin'})}}>MY PROFILE</div></div>
-                <div className={styles.Option}><NavLink to='/about' activeClassName={styles.Active}>BAG</NavLink></div>
+                <div className={styles.Option} onClick={() => openHandler('/myprofile', {type: 'initialLogin'})}>MY PROFILE</div>
+                <div className={styles.Option} onClick={() => {openHandler('/about', {type: 'initialLogin'})}}>BAG</div>
+                { currentUser ? 
+                <div className={styles.Option} onClick={() => auth.signOut() }>LOG OUT</div> :
+                <div className={styles.Option} onClick={() => {openHandler(); dispatcher({type: 'login'})}}>LOG IN</div>}
             </div>
     </nav>    
         )
