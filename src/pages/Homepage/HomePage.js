@@ -7,7 +7,6 @@ import {ClosedContext} from '../../App';
 import SlideBarChanger from '../../components/SlideBarChanger/SlideBarChanger';
 
 const HomePage = (props) => {
-
     return (
         <div className={classes.HomePage}>
             <Directory/>

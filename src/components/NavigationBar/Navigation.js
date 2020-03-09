@@ -3,8 +3,10 @@ import SVG from '../../assets/images/SVG/Logo';
 import styles from './Navigation.module.scss';
 import { NavLink } from 'react-router-dom';
 import { auth } from '../../firebase/firebase';
+import { connect } from 'react-redux';
 
-const Navigation = ({openHandler, dispatcher, currentUser}) => {  
+const Navigation = ({openHandler, currentUser}) => {  
+    console.log(currentUser)
     return (
             <nav className={styles.Navigation}>
             <div className={styles.OptionLeft}>
@@ -25,4 +27,8 @@ const Navigation = ({openHandler, dispatcher, currentUser}) => {
         )
 };
 
-export default Navigation;
+const mapStateToProps = state => ({
+    currentUser: state.user.currentUser
+})
+
+export default connect(mapStateToProps)(Navigation);

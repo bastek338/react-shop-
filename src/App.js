@@ -1,12 +1,12 @@
 import React, {useState, useReducer, useEffect} from 'react';
-import logo from './logo.svg';
 import './App.css';
 import HomePage from './pages/Homepage/HomePage';
 import Navigation from './components/NavigationBar/Navigation';
 import ShopPage from './pages/Shop/ShopPage';
-import Auth from './pages/Auth/Auth';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter} from 'react-router-dom';
 import { auth, createUserProfile } from './firebase/firebase';
+import { connect } from 'react-redux';
+import { setUser } from './redux/actions/actionCreators';
 
 
 export const ClosedContext = React.createContext(false);
@@ -41,11 +41,10 @@ function reducerSlider (state, action) {
   }
 }
 
-function App(props) {
+function App({setCurrentUser, history}) {
   const [sliderState, dispatch] = useReducer(reducerSlider, initialState)
   const [loggedIn, setLoggedIn] = useState(false);
   const [closed, setClosed] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
   
     useEffect(() => {
       let unsubscribeFromAuth = null;  
@@ -71,7 +70,7 @@ function App(props) {
       unsubscribeFromAuth()
       console.log("umounted")
     }
-  }, [loggedIn])
+  }, [loggedIn, setCurrentUser])
 
   const closeSideBarHandler = () => {
     setClosed(false);
@@ -82,15 +81,14 @@ function App(props) {
         setClosed(true)
         dispatch(typeofDispatch);
       } else {
-        props.history.push(path);
+        history.push(path);
         setClosed(false);
       }
   }
 
-  console.log(currentUser)
   return (
     <div>
-      <Navigation dispatcher={dispatch} openHandler={openSideBarHandler} currentUser={currentUser}/>
+      <Navigation dispatcher={dispatch} openHandler={openSideBarHandler}/>
       <Switch>
           <Route 
           exact 
@@ -100,7 +98,7 @@ function App(props) {
               <HomePage/>
             </ClosedContext.Provider>
           </Route>
-          <Route path="/shop" component={ShopPage} dispatcher={dispatch} currentUser={currentUser}/>
+          <Route path="/shop" component={ShopPage} dispatcher={dispatch}/>
           <Route path="/myprofile" render={() => <h1>Hello from myprofile</h1>}/>
         
      </Switch> 
@@ -108,4 +106,8 @@ function App(props) {
   );
 }
 
-export default withRouter(App);
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: user => dispatch(setUser(user))
+})
+
+export default connect(null, mapDispatchToProps)(withRouter(App));

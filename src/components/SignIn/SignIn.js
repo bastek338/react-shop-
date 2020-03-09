@@ -20,7 +20,6 @@ const SignIn = () => {
         console.log(values)
     try {
         await auth.signInWithEmailAndPassword(email, password);
-        e.preventDefault();
    } catch (err) {
        console.error(`Something went wrong: ${err.message}`)
        setError(err);
