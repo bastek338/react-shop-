@@ -4,8 +4,7 @@ import styles from './Navigation.module.scss';
 import { NavLink } from 'react-router-dom';
 import { auth } from '../../firebase/firebase';
 
-const Navigation = ({openHandler, dispatcher, currentUser}) => {
-    console.log(dispatcher)    
+const Navigation = ({openHandler, dispatcher, currentUser}) => {  
     return (
             <nav className={styles.Navigation}>
             <div className={styles.OptionLeft}>
@@ -20,7 +19,7 @@ const Navigation = ({openHandler, dispatcher, currentUser}) => {
                 <div className={styles.Option} onClick={() => {openHandler('/about', {type: 'initialLogin'})}}>BAG</div>
                 { currentUser ? 
                 <div className={styles.Option} onClick={() => auth.signOut() }>LOG OUT</div> :
-                <div className={styles.Option} onClick={() => {openHandler(); dispatcher({type: 'login'})}}>LOG IN</div>}
+                <div className={styles.Option} onClick={() => openHandler('/', {type: 'login'})}>LOG IN</div>}
             </div>
     </nav>    
         )

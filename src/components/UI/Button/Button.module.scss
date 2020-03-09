@@ -9,6 +9,10 @@
     outline: none;
     text-transform: uppercase;
     transition: all 0.2s ease-out;
+
+    &.Large {
+        min-width: 100%;
+    }
 }
 
 .Button:hover {

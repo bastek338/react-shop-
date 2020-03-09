@@ -6,8 +6,8 @@ import Navigation from './components/NavigationBar/Navigation';
 import ShopPage from './pages/Shop/ShopPage';
 import Auth from './pages/Auth/Auth';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import { auth } from './firebase/firebase';
-import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import { auth, createUserProfile } from './firebase/firebase';
+
 
 export const ClosedContext = React.createContext(false);
 
@@ -36,36 +36,49 @@ function reducerSlider (state, action) {
         login: false,
         register: true
       }
+    default: 
+    return initialState
   }
 }
 
 function App(props) {
   const [sliderState, dispatch] = useReducer(reducerSlider, initialState)
+  const [loggedIn, setLoggedIn] = useState(false);
   const [closed, setClosed] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   
-  let unsubscribeFromAuth = null;
-  
-  useEffect(() => {
-    if(currentUser){
-      setClosed(false);
-    }
+    useEffect(() => {
+      let unsubscribeFromAuth = null;  
+      if(loggedIn){
+        setClosed(false);
+      }
 
-    unsubscribeFromAuth = auth.onAuthStateChanged(user => {
-      setCurrentUser(user);
+    unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      if(userAuth) {
+        const userRef = await createUserProfile(userAuth);
+        userRef.onSnapshot(userSnapshot => setCurrentUser({
+            id: userSnapshot.id,
+            ...userSnapshot.data()
+        }))
+        setLoggedIn(true);
+      } else {
+        setCurrentUser(userAuth)
+        setLoggedIn(false)
+      }
     })
 
     return () => {
       unsubscribeFromAuth()
+      console.log("umounted")
     }
-  }, [currentUser])
+  }, [loggedIn])
 
   const closeSideBarHandler = () => {
     setClosed(false);
   }
   
   const openSideBarHandler = (path, typeofDispatch) => { 
-      if(currentUser == null){
+      if(!loggedIn){
         setClosed(true)
         dispatch(typeofDispatch);
       } else {
@@ -73,6 +86,8 @@ function App(props) {
         setClosed(false);
       }
   }
+
+  console.log(currentUser)
   return (
     <div>
       <Navigation dispatcher={dispatch} openHandler={openSideBarHandler} currentUser={currentUser}/>
