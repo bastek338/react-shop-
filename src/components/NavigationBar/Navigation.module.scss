@@ -7,14 +7,15 @@
     font-size: 22px;
 
    & .OptionLeft {
-       width: 30%;
        display: flex;
-   }
+       justify-content: start;
+       flex: 1 1 20%;
+    }
 
    & .OptionRight {
-       width: 30%;
        display: flex;
        justify-content: flex-end;
+       flex: 1 1 20%;
    }
 
    & .Option {
@@ -29,6 +30,8 @@
 
    & .Logo{
        display: flex;
+       justify-content: center;
+       flex: 1 1 auto;
    }
 
     & a {

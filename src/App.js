@@ -1,4 +1,4 @@
-import React, {useState, useReducer, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 import HomePage from './pages/Homepage/HomePage';
 import Navigation from './components/NavigationBar/Navigation';
@@ -6,45 +6,15 @@ import ShopPage from './pages/Shop/ShopPage';
 import { Route, Switch, withRouter} from 'react-router-dom';
 import { auth, createUserProfile } from './firebase/firebase';
 import { connect } from 'react-redux';
-import { setUser } from './redux/actions/actionCreators';
-
+import { setUser } from './redux/actions/user/userActionCreators';
+import useSlider from './hooks/useSlider';
 
 export const ClosedContext = React.createContext(false);
 
-const initialState = {
-    initialLogin: false,
-    login: false,
-    register: false,
-}
-
-function reducerSlider (state, action) {
-  switch(action.type) {
-    case 'initialLogin': 
-      return {
-        ...state,
-        initialLogin: true
-      }
-    case 'login':
-      return {
-        initialLogin: false,
-        login: true,
-        register: false
-      }
-    case 'register': 
-      return {
-        initialLogin: false,
-        login: false,
-        register: true
-      }
-    default: 
-    return initialState
-  }
-}
-
 function App({setCurrentUser, history}) {
-  const [sliderState, dispatch] = useReducer(reducerSlider, initialState)
   const [loggedIn, setLoggedIn] = useState(false);
   const [closed, setClosed] = useState(false);
+  const { dispatch, sliderState } = useSlider();
   
     useEffect(() => {
       let unsubscribeFromAuth = null;  

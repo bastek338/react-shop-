@@ -1,0 +1,23 @@
+.Container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #fff;
+    height: 350px;
+    width: 250px;
+    padding: 20px;
+    border: 1px solid #000;
+    position: absolute;
+    top: 110px;
+    right: 60px;
+    z-index: 5;
+}
+
+.Item {
+    height: 230px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    overflow-y: scroll;
+}
+

@@ -1,0 +1,26 @@
+.CartIcon {
+    width: 45px;
+    height: 45px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    .ShoppingIcon {
+        width: 25px;
+        height: 25px;
+    }
+    
+    .ItemCounter {
+        position: relative;
+        top: 2px;
+        right: 15px;
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+}
+
+
+
