@@ -8,9 +8,8 @@ const CollectionsPreview = ({title, items}) => {
         <div className={styles.Title}>
             <h1>{title.toUpperCase()}</h1>
         </div>
-            
             <div className={styles.Preview}>
-                {items.filter(item => (item.id < 5 )).map(item => {
+                {items.map(item => {
                     return (<CollectionItem key={item.id} item={item}/>);
                 })}
             </div>
