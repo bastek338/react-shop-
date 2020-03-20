@@ -6,16 +6,17 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    text-align: center;
 
     .ShoppingIcon {
+        position: absolute;
         width: 25px;
         height: 25px;
     }
     
     .ItemCounter {
         position: relative;
-        top: 2px;
-        right: 15px;
+        top: 3px;
         font-size: 13px;
         font-weight: bold;
     }

@@ -2,12 +2,14 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import HomePage from './pages/Homepage/HomePage';
 import Navigation from './components/NavigationBar/Navigation';
+import Chcekout from './pages/Checkout/Checkout';
 import ShopPage from './pages/Shop/ShopPage';
 import { Route, Switch, withRouter} from 'react-router-dom';
 import { auth, createUserProfile } from './firebase/firebase';
 import { connect } from 'react-redux';
 import { setUser } from './redux/actions/user/userActionCreators';
 import useSlider from './hooks/useSlider';
+import Checkout from './pages/Checkout/Checkout';
 
 export const ClosedContext = React.createContext(false);
 
@@ -69,6 +71,7 @@ function App({setCurrentUser, history}) {
             </ClosedContext.Provider>
           </Route>
           <Route path="/shop" component={ShopPage} dispatcher={dispatch}/>
+          <Route path="/checkout" component={Checkout} />
           <Route path="/myprofile" render={() => <h1>Hello from myprofile</h1>}/>
         
      </Switch> 

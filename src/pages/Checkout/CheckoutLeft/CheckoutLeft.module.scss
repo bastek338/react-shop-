@@ -1,0 +1,27 @@
+@mixin table {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    padding: 30px 15px;
+
+    & span {
+        width: 23%
+    }
+
+    & span:nth-last-child(1){
+        width: 8%;
+    }
+}
+
+.Container {
+    width: 70%;
+    height: 100%;
+    font-weight: bold;
+}
+
+.TableHeader {
+    @include table();
+    text-transform: uppercase;
+    color: #4b4949;
+}
+
