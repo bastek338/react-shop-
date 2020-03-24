@@ -15,11 +15,12 @@ export const increaseQuantity = (cartItems, currentItem) => {
 }
 
 export const decreaseQuantity = (cartItems, currentItem) => {
-    return cartItems.map(item => {
-        if(item.quantity > 1) {
-            return { ...item, quantity: item.quantity - 1 }
-        } else {
-            return  { ...item }
-        }
-    })
+   return cartItems.map(item => {
+    if(item.id === currentItem.id) {
+        return { ...item, quantity: item.quantity - 1 }
+    } else {
+        return  { ...item }
+    }
+   }).filter(item => item.quantity !== 0)
+   
 }

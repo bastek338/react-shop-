@@ -20,17 +20,14 @@
 
     & .Quantity {
         width: 23%;
+        display: flex;
     }
 
-    & .Decrease {
+    & .Arrow {
         cursor: pointer;
         padding: 0 10px;
     }
 
-    & .Increase {
-        cursor: pointer;
-        padding: 0 10px;
-    }
 
     & span {
         width: 23%;
