@@ -6,8 +6,7 @@ import SlideBarChanger from '../../components/SlideBarChanger/SlideBarChanger';
 const HomePage = (props) => {
     return (
         <div className={classes.HomePage}>
-            <Directory/>
-            <SlideBarChanger />        
+            <Directory/>        
         </div>
     )
 }

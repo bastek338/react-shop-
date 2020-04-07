@@ -21,11 +21,12 @@
     & .Quantity {
         width: 23%;
         display: flex;
+        justify-content: center;
     }
 
     & .Arrow {
         cursor: pointer;
-        padding: 0 10px;
+        flex-basis: 20px;
     }
 
 

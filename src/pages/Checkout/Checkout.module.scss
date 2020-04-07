@@ -1,3 +1,9 @@
 .Container {
     margin: 50px;
+    height: 100vh;
+
+    & .Wrapper {
+        display: flex;
+        height: 100vh;
+    }
 }

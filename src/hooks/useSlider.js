@@ -1,4 +1,4 @@
-import{ useReducer } from 'react';
+import{ useReducer, useState } from 'react';
 
 const initialState = {
     initialLogin: false,
@@ -33,10 +33,18 @@ function reducerSlider (state, action) {
 
 const useSlider = () => {
     const [sliderState, dispatch] = useReducer(reducerSlider, initialState);
-    
+    const [closed, setClosed] = useState(false);
+
+    const closeSideBarHandler = () => {
+      setClosed(false);
+    }
+
     return {
         dispatch,
-        sliderState
+        sliderState,
+        setClosed, 
+        closed,
+        closeSideBarHandler
     }
 }
 

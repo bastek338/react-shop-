@@ -1,7 +1,7 @@
 import React from 'react';
 import SVG from '../../assets/images/SVG/Logo';
 import styles from './Navigation.module.scss';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import { auth } from '../../firebase/firebase';
 import { connect } from 'react-redux';
 import CartIcon from '../UI/CartIcon/CartIcon';
@@ -10,8 +10,13 @@ import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from '../../redux/selectors/user';
 import { selectCartHidden } from '../../redux/selectors/cart';
 
-const Navigation = ({openHandler, currentUser, hidden}) => {  
-    console.log(currentUser)
+const Navigation = ({openHandler, currentUser, hidden, history}) => {  
+    
+    const logout = () => {
+        auth.signOut();
+        (history.location.pathname !== "/") && history.push('/') 
+    }
+
     return (
         <nav>
             <div className={styles.Navigation}>
@@ -27,7 +32,7 @@ const Navigation = ({openHandler, currentUser, hidden}) => {
                     <div className={styles.Option} onClick={() => {openHandler('/about', {type: 'initialLogin'})}}>BAG</div>
                     { currentUser ? (
                     <>
-                        <div className={styles.Option} onClick={() => auth.signOut() }>LOG OUT</div> 
+                        <div className={styles.Option} onClick={logout}>LOG OUT</div> 
                         <CartIcon/>
                     </>
                     ) :
@@ -45,4 +50,4 @@ const mapStateToProps = createStructuredSelector({
 })
 
 
-export default connect(mapStateToProps)(Navigation);
+export default withRouter(connect(mapStateToProps)(Navigation));
