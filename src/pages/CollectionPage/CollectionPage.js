@@ -3,10 +3,10 @@ import { connect } from 'react-redux'
 import { selectCollectionForPreview } from '../../redux/selectors/collection'
 import CollectionItem from '../../components/CollectionsPreview/CollectionItem/CollectionItem'
 import styles from './CollectionPage.module.scss';
+import { withRouter } from 'react-router-dom';
 
-const CollectionPage = ({match, collection}) => {
+const CollectionPage = ({collection}) => {
     const { title, items } = collection
-    console.log(items)
     return (
         <div >
             <h2>{title}</h2>
@@ -24,4 +24,4 @@ const mapStateToProps = (state, ownProps) => ({
     collection: selectCollectionForPreview(ownProps.match.params.collection)(state)
 })
 
-export default connect(mapStateToProps)(CollectionPage)
+export default withRouter(connect(mapStateToProps)(CollectionPage))

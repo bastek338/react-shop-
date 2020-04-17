@@ -1,50 +1,45 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import HomePage from './pages/Homepage/HomePage';
 import Navigation from './components/NavigationBar/Navigation';
 import ShopPage from './pages/Shop/ShopPage';
 import { Route, Switch, withRouter} from 'react-router-dom';
-import { auth, createUserProfile, addCollectionToFirestore } from './firebase/firebase';
+import { auth, createUserProfile} from './firebase/firebase';
 import { connect } from 'react-redux';
 import { setUser } from './redux/actions/user/userActionCreators';
 import useSlider from './hooks/useSlider';
 import Checkout from './pages/Checkout/Checkout';
 import SlideBarChanger from './components/SlideBarChanger/SlideBarChanger';
-import { selectCollectionsForOverview  } from './redux/selectors/collection';
+import Spinner from './components/UI/Spinner/Spinner';
 
 export const ClosedContext = React.createContext();
 
-function App({setCurrentUser, history, currentUser, collection}) {
-  const [loggedIn, setLoggedIn] = useState(false);
+function App({setCurrentUser, history, currentUser}) {
   const { dispatch, sliderState, setClosed, closed, closeSideBarHandler} = useSlider();
-  
-  console.log(collection)
 
     useEffect(() => {
-      let unsubscribeFromAuth = null;  
-      if(currentUser){
-        setClosed(false);
-      }
 
-      addCollectionToFirestore('collections', collection.map(({title, items}) => ({title, items})))
-
-    unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+    const unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      console.log(userAuth)
       if(userAuth) {
         const userRef = await createUserProfile(userAuth);
-        userRef.onSnapshot(userSnapshot => setCurrentUser({
+        userRef.onSnapshot(userSnapshot => {
+          setCurrentUser({
             id: userSnapshot.id,
             ...userSnapshot.data()
-        }))
-        setLoggedIn(true);
+          })
+          setClosed(false);
+          dispatch({type: 'close'})
+        })
       } else {
         setCurrentUser(userAuth)
-        setLoggedIn(false)
       }
     })
 
     return () => {
       unsubscribeFromAuth()
       console.log("umounted")
+      localStorage.removeItem('name')
     }
   }, [])
   
@@ -58,6 +53,7 @@ function App({setCurrentUser, history, currentUser, collection}) {
       }
   }
 
+  console.log(currentUser)
   return (
     <div>
       <Navigation dispatcher={dispatch} openHandler={openSideBarHandler}/>
@@ -67,8 +63,9 @@ function App({setCurrentUser, history, currentUser, collection}) {
       <Switch>
           <Route exact path='/'>
               <HomePage/>
+              <Spinner/>
           </Route>
-          <Route path="/shop" component={ShopPage} dispatcher={dispatch}/>
+          <Route path="/shop" component={ShopPage}/>
           <Route path="/checkout" component={Checkout} />
           <Route path="/myprofile" render={() => <h1>Hello from myprofile</h1>}/>
      </Switch>
@@ -82,8 +79,7 @@ const mapDispatchToProps = dispatch => ({
 
 
 const mapStateToProps = state => ({
-  currentUser: state.user.currentUser,
-  collection: selectCollectionsForOverview(state)
+  currentUser: state.user.currentUser
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App));

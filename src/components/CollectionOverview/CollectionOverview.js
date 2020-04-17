@@ -6,7 +6,7 @@ import { selectCollectionsForOverview } from '../../redux/selectors/collection';
 import { connect } from 'react-redux'
 
 const CollectionOverview = ({collection}) => {
-    return (
+  return (
         <div className={styles.Container}>
         {collection.map(({id, ...otherCollectionItems}) => {
           return <CollectionsPreview key={id} {...otherCollectionItems} />

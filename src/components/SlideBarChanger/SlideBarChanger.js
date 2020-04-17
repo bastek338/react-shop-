@@ -6,19 +6,8 @@ import SignUp from '../Sliders/SignUp/SignUp';
 import { ClosedContext } from '../../App';
 
 const SlideBarChanger = ({sliderState, dispatch}) =>{ 
- 
-    // const context = useContext(ClosedContext);
-
-    // const { sliderState, dispatch } = context; 
-    console.log(sliderState)
 
     let slider = null; 
-    
-    // if() {
-    //     console.log("im ready")
-    // } else {
-    //     console.log('im not ready')
-    // }
 
     if(sliderState !== undefined) {
         switch(true) {

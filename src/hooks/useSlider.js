@@ -25,6 +25,8 @@ function reducerSlider (state, action) {
         login: false,
         register: true
       }
+    case 'close': 
+      return initialState
     default: 
     return initialState
   }
